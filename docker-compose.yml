@@ -4,7 +4,6 @@ services:
   backend:
     build:
       context: ./antit_back
-      dockerfile: ./antit_back/Dockerfile
     ports:
       - "8000:8000"
     volumes:
@@ -15,14 +14,13 @@ services:
     environment:
       - POSTGRES_DB=antit_db
       - POSTGRES_USER=antit_user
-      - POSTGRES_PASSWORD=
+      - POSTGRES_PASSWORD=antit_pass
     env_file:
-      - ./antitback/antit_back/.env
+      - ./antit_back/antit_back/.env
 
   frontend:
     build:
       context: ./antit_front
-      dockerfile: ./antit_front/Dockerfile
     ports:
       - "8080:8080"
     volumes:
@@ -33,6 +31,7 @@ services:
     environment:
       POSTGRES_DB: 'antit_db'
       POSTGRES_USER: 'antit_user'
-      POSTGRES_PASSWORD:
+      POSTGRES_PASSWORD: 'antit_pass'
+      POSTGRES_HOST_AUTH_METHOD: 'trust'
     ports:
       - "5432:5432"

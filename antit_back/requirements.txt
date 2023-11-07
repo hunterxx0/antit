@@ -1,0 +1,7 @@
+django
+django-environ
+djangorestframework
+pytest
+psycopg2-binary
+requests
+responses

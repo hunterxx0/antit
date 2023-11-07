@@ -87,8 +87,8 @@ DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
         "NAME": "antit_db",
-        "USER": "antit_user ",
-        "PASSWORD": env("POSTGRES_PASSWORD"),
+        "USER": "antit_user",
+        "PASSWORD": "antit_pass",
         "HOST": "db",
         "PORT": "5432",
     }
