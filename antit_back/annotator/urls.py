@@ -1,10 +1,7 @@
-from django.urls import path, include
-from rest_framework.routers import DefaultRouter
-from views import AudioView
-
-router = DefaultRouter()
-router.register(r"audio", AudioView)
+from django.urls import path
+from .views import signup, login
 
 urlpatterns = [
-    path("api/", include(router.urls)),
+    path("signup/", signup, name="signup"),
+    path("login/", login, name="login"),
 ]
