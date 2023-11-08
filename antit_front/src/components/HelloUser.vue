@@ -1,18 +1,17 @@
 <template>
   <div>
-    <h2>Hello, {{ username }}!</h2>
+    <h2>Hello, {{ user.username }}!</h2>
+    <router-link to="/add-audio">Add Audio</router-link>
   </div>
 </template>
 
 <script>
 export default {
+  name: 'HelloUser',
   data() {
     return {
-      username: '',
+      user: '',
     };
-  },
-  mounted() {
-    this.getUsernameFromToken();
   },
   methods: {
     getUsernameFromToken() {
@@ -22,7 +21,7 @@ export default {
           const decodedToken = this.parseJwt(token);
           let username = decodedToken.username
           username = username.charAt(0).toUpperCase() + username.slice(1);
-          this.username = username;
+          this.user = username;
         } else {
           console.error('Token is missing');
           this.$router.push('/login');
