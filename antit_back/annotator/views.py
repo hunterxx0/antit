@@ -14,6 +14,7 @@ def signup(request):
     if serializer.is_valid():
         user = serializer.save()
         refresh = RefreshToken.for_user(user)
+        refresh.payload["username"] = user.username
         return Response(
             {
                 "refresh": str(refresh),
@@ -32,6 +33,7 @@ def login(request):
     user = authenticate(username=username, password=password)
     if user:
         refresh = RefreshToken.for_user(user)
+        refresh.payload["username"] = user.username
         return Response(
             {
                 "refresh": str(refresh),

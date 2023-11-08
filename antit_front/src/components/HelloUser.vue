@@ -17,12 +17,12 @@ export default {
   methods: {
     getUsernameFromToken() {
       const token = localStorage.getItem('access');
-      console.log('Token:', token);
       try {
         if (token) {
           const decodedToken = this.parseJwt(token);
-          console.log('Decoded Token:', decodedToken);
-          this.username = decodedToken.username;
+          let username = decodedToken.username
+          username = username.charAt(0).toUpperCase() + username.slice(1);
+          this.username = username;
         } else {
           console.error('Token is missing');
           this.$router.push('/login');
