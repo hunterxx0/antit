@@ -29,12 +29,13 @@ services:
   db:
     image: postgres:latest
     volumes:
-      - db_data:/var/lib/postgresql/data_db
+      - db_data:/var/lib/postgresql/data_db:rw
     environment:
       POSTGRES_DB: 'antit_db'
       POSTGRES_USER: 'antit_user'
       POSTGRES_PASSWORD: 'antit_pass'
       POSTGRES_HOST_AUTH_METHOD: 'trust'
+      PGDATA: '/var/lib/postgresql/data/'
     ports:
       - "5432:5432"
 
