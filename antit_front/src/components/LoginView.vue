@@ -30,15 +30,17 @@ export default {
           body: JSON.stringify({ username: this.username, password: this.password }),
         });
         const data = await response.json();
+        console.log(data)
         if (response.ok) {
           localStorage.setItem('access', data.access);
           localStorage.setItem('refresh', data.refresh);
           this.$router.push('/hello-user');
         } else {
-          this.error = data.detail;
+          this.error = data.error;
         }
       } catch (error) {
-        console.error('Error:', error);
+        console.error('Error:', "Invalid Credentials");
+        this.error = "Invalid Credentials";
       }
     },
   },
