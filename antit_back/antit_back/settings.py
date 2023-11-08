@@ -9,11 +9,10 @@ https://docs.djangoproject.com/en/4.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.2/ref/settings/
 """
-
+import os
 from pathlib import Path
 import environ
 from datetime import timedelta
-
 
 env = environ.Env(
     DJANGO_DEBUG=(bool, False),
@@ -163,3 +162,6 @@ SIMPLE_JWT = {
     "SLIDING_TOKEN_REFRESH_EXP_CLAIM": timedelta(minutes=5),
     "SLIDING_TOKEN_LIFETIME": timedelta(minutes=120),
 }
+
+MEDIA_URL = "/media/"
+MEDIA_ROOT = os.path.join(BASE_DIR, "audio_files")
