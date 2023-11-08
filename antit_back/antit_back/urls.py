@@ -21,4 +21,5 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path("api/", include("annotator.urls")),
     path("api/audio/", include("audio.urls")),
+    path("api/transcription/", include("transcription.urls")),
 ]
