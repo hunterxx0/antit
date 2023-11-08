@@ -10,7 +10,7 @@ const routes = [
   { path: '/signup', component: SignUp },
   { path: '/hello-user', component: HelloUser },
   { path: '/', redirect: '/login' },
-  { path: '/annotate/:audioId', component: AnnotateAudio },
+  { path: '/annotate/:audioId', name: 'AnnotateAudio', component: AnnotateAudio },
   { path: '/add-audio', component: AddAudio },
 ];
 

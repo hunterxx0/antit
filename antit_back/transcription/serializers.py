@@ -1,8 +1,13 @@
-from rest_framework.serializers import ModelSerializer
+from rest_framework.serializers import ModelSerializer, SerializerMethodField
 from .models import Transcription
 
 
 class TranscriptionSerializer(ModelSerializer):
+    user_name = SerializerMethodField()
+
     class Meta:
         model = Transcription
-        fields = "__all__"
+        fields = ["id", "audio", "transcription", "user", "user_name", "created_at"]
+
+    def get_user_name(self, obj):
+        return obj.user.username.capitalize()

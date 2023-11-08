@@ -1,17 +1,27 @@
 <template>
     <div>
       <h2>Annotate Audio</h2>
-      <audio :src="audioFile" controls></audio>
+      <audio :src="audioFile" controls></audio><br/>
       <input type="text" v-model="transcription" placeholder="Enter transcription" />
       <button @click="submitTranscription">Submit</button>
       <p v-if="error" style="color: red;">{{ error }}</p>
       <h3>Old Transcriptions</h3>
-      <ul>
-        <li v-for="transcript in oldTranscriptions" :key="transcript.id">
-          <p>Text: {{ transcript.transcription }}</p>
-          <p>User: {{ transcript.user.name }}</p>
-        </li>
-      </ul>
+      <table v-if="oldTranscriptions && oldTranscriptions.length > 0">
+        <thead>
+            <tr>
+            <th>Transcription Text</th>
+            <th>User Name</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr v-for="transcript in oldTranscriptions" :key="transcript.id">
+            <td>{{ transcript.transcription }}</td>
+            <td>{{ transcript.user_name }}</td>
+            </tr>
+        </tbody>
+      </table>
+      <p v-else>No old transcriptions available.</p>
+
     </div>
   </template>
 
@@ -29,17 +39,21 @@
     },
     methods: {
       async submitTranscription() {
-        try {
-          const response = await fetch(`http://localhost:8000/api/transcription/${this.audioId}/transcribe/transcription/`, {
+        const user = localStorage.getItem('user')
+        const token = localStorage.getItem('token');
+        console.log(user)
+        if (user) {
+            const response = await fetch(`http://localhost:8000/api/transcription/${this.audioId}/transcribe/transcription/`, {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
+              'Authorization': `Token ${token}`,
             },
             body: JSON.stringify({
               audio: this.audioId,
-              user: JSON.parse(localStorage.getItem('user')).id,
-            transcription: this.transcription,
-          }),
+              user: user,
+              transcription: this.transcription,
+            }),
         });
         if (response.ok) {
             await this.fetchOldTranscriptions();
@@ -47,12 +61,15 @@
             this.$refs.submitButton.disabled = true;
         } else {
           const data = await response.json();
-          throw new Error(data.detail);
+          console.log(response)
+          console.log(data)
+        //   throw new Error(data.detail);
         }
-      } catch (error) {
-        console.error(error);
-        this.error = error.message;
-      }
+        }else {
+            this.$router.push('/login');
+        }
+
+
     },
     async fetchAudio() {
       try {
@@ -77,9 +94,10 @@
     async fetchOldTranscriptions() {
       try {
         const audioId = this.$route.params.audioId;
-        const response = await fetch(`http://localhost:8000/api/transcription/${audioId}/transcription/`);
+        const response = await fetch(`http://localhost:8000/api/transcription/${audioId}/transcribe/transcription/`);
         if (response.ok) {
           const data = await response.json();
+          console.log(data)
           this.oldTranscriptions = data;
         } else {
           throw new Error('Unable to fetch old transcriptions.');

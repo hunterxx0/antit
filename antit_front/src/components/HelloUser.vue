@@ -1,17 +1,27 @@
 <template>
   <div>
-    <h2>Hello, {{ user.username }}!</h2>
+    <h2>Hello, {{ user }}!</h2>
+    <router-link to="/add-audio">Add Audio</router-link> <br>
     <button @click="fetchAudios">Refresh</button>
-    <ul v-if="audios">
-      <li v-for="audio in audios" :key="audio.id">
-        <p>Filename: {{ audio.filename }}</p>
-        <p>Duration: {{ audio.duration }}</p>
-        <p>Number of transcriptions: {{ transcriptionCount }}</p>
-        <button @click="annotateAudio(audio)">Annotate</button>
-      </li>
-    </ul>
+    <table v-if="audios">
+      <thead>
+        <tr>
+          <th>Filename</th>
+          <th>Duration</th>
+          <th>Number of Transcriptions</th>
+          <th>Annotate</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="audio in audios" :key="audio.id">
+          <td>{{ audio.filename }}</td>
+          <td>{{ audio.duration }}</td>
+          <td>{{ audio.transcription_count }}</td>
+          <td><button @click="annotateAudio(audio)">Annotate</button></td>
+        </tr>
+      </tbody>
+    </table>
     <p v-else>Loading...</p>
-    <router-link to="/add-audio">Add Audio</router-link>
   </div>
 </template>
 
@@ -22,7 +32,6 @@ export default {
     return {
       user: '',
       audios: null,
-      transcriptionCount: null,
     };
   },
   methods: {
@@ -33,6 +42,7 @@ export default {
           const decodedToken = this.parseJwt(token);
           let username = decodedToken.username
           username = username.charAt(0).toUpperCase() + username.slice(1);
+          localStorage.setItem('user', decodedToken.user_id);
           this.user = username;
         } else {
           console.error('Token is missing');
@@ -61,25 +71,14 @@ export default {
         if (response.ok) {
           const data = await response.json();
           for (const audio of data) {
-            await this.fetchTranscriptionCount(audio);
+            const path = audio.audio_file
+            const nameIndex = path.lastIndexOf("/");
+            const name = path.slice(nameIndex+1);
+            audio.filename = name
           }
           this.audios = data;
         } else {
           throw new Error('Unable to fetch audios.');
-        }
-      } catch (error) {
-        console.error(error);
-        alert('Unable to connect to the server.');
-      }
-    },
-    async fetchTranscriptionCount(audio) {
-      try {
-        const response = await fetch(`http://localhost:8000/api/transcription/${audio.id}/transcription_number/`);
-        if (response.ok) {
-          const data = await response.json();
-          audio.transcriptionCount = data.count;
-        } else {
-          audio.transcriptionCount = 0;
         }
       } catch (error) {
         console.error(error);
