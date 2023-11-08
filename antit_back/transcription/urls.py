@@ -8,4 +8,5 @@ transcription_router.register(r"transcription", TranscriptionView)
 urlpatterns = [
     path("", include(transcription_router.urls)),
     path("<int:audio_pk>/transcribe/", include(transcription_router.urls)),
+    path("<int:audio_pk>/transcription_number/", include(transcription_router.urls)),
 ]

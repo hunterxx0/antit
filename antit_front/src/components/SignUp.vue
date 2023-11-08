@@ -1,13 +1,13 @@
 <template>
   <div>
-    <h2>Login</h2>
-    <form @submit.prevent="login">
+    <h2>Sign Up</h2>
+    <form @submit.prevent="signup">
       <input type="text" v-model="username" placeholder="Username" />
       <input type="password" v-model="password" placeholder="Password" />
-      <button type="submit">Login</button>
+      <button type="submit">Sign Up</button>
     </form>
     <p v-if="error" style="color: red;">{{ error }}</p>
-    <p>Don't have an account? <router-link to="/signup">Sign up</router-link></p>
+    <p>Already have an account? <router-link to="/login">Login</router-link></p>
   </div>
 </template>
 
@@ -21,9 +21,9 @@ export default {
     };
   },
   methods: {
-    async login() {
+    async signup() {
       try {
-        const response = await fetch('http://localhost:8000/api/login/', {
+        const response = await fetch('http://localhost:8000/api/signup/', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
