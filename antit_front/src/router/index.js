@@ -1,19 +1,15 @@
-import Vue from 'vue';
-import VueRouter from 'vue-router';
-import Signup from '../components/Signup.vue';
-import Login from '../components/Login.vue';
-import User from '../components/User.vue';
-
-Vue.use(VueRouter);
+import { createRouter, createWebHistory } from 'vue-router';
+import Login from '@/components/LoginView.vue';
+import HelloUser from '@/components/HelloUser.vue';
 
 const routes = [
-  { path: '/signup', component: Signup },
   { path: '/login', component: Login },
-  { path: '/user', component: User },
+  { path: '/hello-user', component: HelloUser },
+  { path: '/', redirect: '/login' },
 ];
 
-const router = new VueRouter({
-  mode: 'history',
+const router = createRouter({
+  history: createWebHistory(),
   routes,
 });
 

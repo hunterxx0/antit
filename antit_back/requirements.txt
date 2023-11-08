@@ -1,6 +1,8 @@
 django
+django-cors-headers
 django-environ
 djangorestframework
+djangorestframework_simplejwt
 pytest
 psycopg2-binary
 requests

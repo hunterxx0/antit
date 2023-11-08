@@ -28,6 +28,8 @@ services:
 
   db:
     image: postgres:latest
+    volumes:
+      - db_data:/var/lib/postgresql/data_db
     environment:
       POSTGRES_DB: 'antit_db'
       POSTGRES_USER: 'antit_user'
@@ -35,3 +37,6 @@ services:
       POSTGRES_HOST_AUTH_METHOD: 'trust'
     ports:
       - "5432:5432"
+
+volumes:
+  db_data:
