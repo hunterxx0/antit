@@ -31,7 +31,6 @@ export default {
           body: JSON.stringify({ username: this.username, password: this.password }),
         });
         const data = await response.json();
-        console.log(data)
         if (response.ok) {
           localStorage.setItem('access', data.access);
           localStorage.setItem('refresh', data.refresh);

@@ -3,24 +3,26 @@
     <h2>Hello, {{ user }}!</h2>
     <router-link to="/add-audio">Add Audio</router-link> <br>
     <button @click="fetchAudios">Refresh</button>
-    <table v-if="audios">
-      <thead>
-        <tr>
-          <th>Filename</th>
-          <th>Duration</th>
-          <th>Number of Transcriptions</th>
-          <th>Annotate</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr v-for="audio in audios" :key="audio.id">
-          <td>{{ audio.filename }}</td>
-          <td>{{ audio.duration }}</td>
-          <td>{{ audio.transcription_count }}</td>
-          <td><button @click="annotateAudio(audio)">Annotate</button></td>
-        </tr>
-      </tbody>
-    </table>
+    <div v-if="audios && audios.length > 0">
+      <table>
+        <thead>
+          <tr>
+            <th>Filename</th>
+            <th>Duration</th>
+            <th>Number of Transcriptions</th>
+            <th>Annotate</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="audio in audios" :key="audio.id">
+            <td>{{ audio.filename }}</td>
+            <td>{{ audio.duration }}</td>
+            <td>{{ audio.transcription_count }}</td>
+            <td><button @click="annotateAudio(audio)">Annotate</button></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
     <p v-else>Loading...</p>
   </div>
 </template>
@@ -83,6 +85,7 @@ export default {
       } catch (error) {
         console.error(error);
         alert('Unable to connect to the server.');
+        this.$router.push('/login');
       }
     },
     annotateAudio(audio) {

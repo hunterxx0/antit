@@ -1,12 +1,15 @@
-from django.urls import path, include
-from rest_framework.routers import DefaultRouter
+from django.urls import path
 from .views import TranscriptionView
 
-transcription_router = DefaultRouter()
-transcription_router.register(r"transcription", TranscriptionView)
-
 urlpatterns = [
-    path("", include(transcription_router.urls)),
-    path("<int:audio_pk>/transcribe/", include(transcription_router.urls)),
-    path("<int:audio_pk>/transcription_number/", include(transcription_router.urls)),
+    path(
+        "<int:audio_pk>/transcriptions/",
+        TranscriptionView.as_view({"get": "list", "post": "create"}),
+        name="transcription-list",
+    ),
+    path(
+        "<int:audio_pk>/transcription/update/<int:pk>/",
+        TranscriptionView.as_view({"put": "update"}),
+        name="transcription-detail",
+    ),
 ]
