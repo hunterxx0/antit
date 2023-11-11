@@ -43,10 +43,12 @@ class Transcription(Model):
                             and idx < limit
                             and transcrip[idx + 1].isupper()
                         )
-                        or last_char.isupper()
-                        and idx < limit
-                        and transcrip[idx + 1].isalpha()
-                        and transcrip[idx + 1].isupper()
+                        or (
+                            last_char.isupper()
+                            and idx < limit
+                            and transcrip[idx + 1].isalpha()
+                            and transcrip[idx + 1].isupper()
+                        )
                     ):
                         capitalized = True
                     elif not capitalized or (
