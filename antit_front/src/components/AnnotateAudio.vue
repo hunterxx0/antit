@@ -1,12 +1,12 @@
 <template>
-  <div>
+  <MainPage>
     <h2>Annotate Audio</h2>
     <audio :src="audioFile" controls></audio><br/>
     <input type="text" v-model="transcription" placeholder="Enter transcription" />
-    <button @click="submitTranscription">Submit</button>
+    <button class="btn btn-primary" @click="submitTranscription">Submit</button>
     <p v-if="error" style="color: red;">{{ error }}</p>
     <h3>Old Transcriptions</h3>
-    <table v-if="oldTranscriptions && oldTranscriptions.length > 0">
+    <table class="table table-striped table-bordered" v-if="oldTranscriptions && oldTranscriptions.length > 0">
       <thead>
         <tr>
           <th>Transcription Text</th>
@@ -21,11 +21,16 @@
       </tbody>
     </table>
     <p v-else>No old transcriptions available.</p>
-  </div>
+  </MainPage>
 </template>
 
 <script>
+import MainPage from '@/components/MainPage.vue';
+
 export default {
+  components:{
+    MainPage,
+  },
   name: 'AnnotateAudio',
   data() {
     return {

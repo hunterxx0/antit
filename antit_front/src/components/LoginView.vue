@@ -1,13 +1,27 @@
 <template>
-  <div>
-    <h2>Login</h2>
-    <form @submit.prevent="login">
-      <input type="text" v-model="username" placeholder="Username" />
-      <input type="password" v-model="password" placeholder="Password" />
-      <button type="submit">Login</button>
-    </form>
-    <p v-if="error" style="color: red;">{{ error }}</p>
-    <p>Don't have an account? <router-link to="/signup">Sign up</router-link></p>
+  <div class="container mt-5">
+    <div class="row justify-content-center align-items-center">
+      <div class="col-md-6">
+        <div class="card">
+          <div class="card-body">
+            <h2 class="card-title text-center mb-4">Login</h2>
+            <form @submit.prevent="login">
+              <div class="mb-3">
+                <label for="username" class="form-label">Username</label>
+                <input type="text" v-model="username" class="form-control" id="username" placeholder="Username" />
+              </div>
+              <div class="mb-3">
+                <label for="password" class="form-label">Password</label>
+                <input type="password" v-model="password" class="form-control" id="password" placeholder="Password" />
+              </div>
+              <button class="btn btn-primary w-100" type="submit">Login</button>
+            </form>
+            <p v-if="error" class="mt-3 text-danger text-center">{{ error }}</p>
+            <p class="mt-3 text-center">Don't have an account? <router-link to="/signup">Sign up</router-link></p>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -46,3 +60,9 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+.card {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+</style>

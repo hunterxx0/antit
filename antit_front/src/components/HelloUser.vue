@@ -1,34 +1,47 @@
 <template>
-  <div>
-    <h2>Hello, {{ user }}!</h2>
-    <router-link to="/add-audio">Add Audio</router-link> <br>
-    <button @click="fetchAudios">Refresh</button>
-    <div v-if="audios && audios.length > 0">
-      <table>
-        <thead>
-          <tr>
-            <th>Filename</th>
-            <th>Duration</th>
-            <th>Number of Transcriptions</th>
-            <th>Annotate</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="audio in audios" :key="audio.id">
-            <td>{{ audio.filename }}</td>
-            <td>{{ audio.duration }}</td>
-            <td>{{ audio.transcription_count }}</td>
-            <td><button @click="annotateAudio(audio)">Annotate</button></td>
-          </tr>
-        </tbody>
-      </table>
+  <MainPage>
+    <div class="container-fluid text-center">
+      <h2>Hello, {{ user }}!</h2>
+      <div v-if="audios && audios.length > 0" class="table-responsive">
+        <table class="table table-striped table-bordered">
+          <thead>
+            <tr>
+              <th>Filename</th>
+              <th>Duration</th>
+              <th>Number of Transcriptions</th>
+              <th>Annotated</th>
+              <th>Annotate</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="audio in audios" :key="audio.id">
+              <td>{{ audio.filename }}</td>
+              <td>{{ audio.duration }}</td>
+              <td>{{ audio.transcription_count }}</td>
+              <td>
+                <i v-if="audio.annotated" class="text-success bi bi-check"></i>
+                <i v-else class="text-danger bi bi-x"></i>
+              </td>
+              <td>
+                <button class="btn btn-primary" @click="annotateAudio(audio)">Annotate</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p v-else>Loading...</p>
     </div>
-    <p v-else>Loading...</p>
-  </div>
+  </MainPage>
 </template>
 
 <script>
+import 'bootstrap/dist/css/bootstrap.min.css';
+import MainPage from '@/components/MainPage.vue';
+
 export default {
+  components: {
+    MainPage,
+  },
   name: 'HelloUser',
   data() {
     return {
@@ -42,7 +55,7 @@ export default {
       try {
         if (token) {
           const decodedToken = this.parseJwt(token);
-          let username = decodedToken.username
+          let username = decodedToken.username;
           username = username.charAt(0).toUpperCase() + username.slice(1);
           localStorage.setItem('user', decodedToken.user_id);
           this.user = username;
@@ -73,10 +86,11 @@ export default {
         if (response.ok) {
           const data = await response.json();
           for (const audio of data) {
-            const path = audio.audio_file
-            const nameIndex = path.lastIndexOf("/");
-            const name = path.slice(nameIndex+1);
-            audio.filename = name
+            console.log(audio)
+            const path = audio.audio_file;
+            const nameIndex = path.lastIndexOf('/');
+            const name = path.slice(nameIndex + 1);
+            audio.filename = name;
           }
           this.audios = data;
         } else {

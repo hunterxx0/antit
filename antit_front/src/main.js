@@ -1,6 +1,9 @@
 import { createApp } from 'vue';
-import App from './App.vue'; // Your main App component
-import router from './router'; // Your router setup
+import App from './App.vue';
+import router from './router';
+import 'bootstrap';
+import 'bootstrap/dist/css/bootstrap.css';
+import 'bootstrap/dist/js/bootstrap.bundle.min';
 
 createApp(App)
   .use(router)

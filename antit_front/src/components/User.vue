@@ -4,6 +4,6 @@
 
   <script>
   export default {
-    // user info
+    // user settings and info update ?
   }
   </script>

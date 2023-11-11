@@ -11,12 +11,9 @@ export default {
 </script>
 
 <style>
+@import '~bootstrap/dist/css/bootstrap.css';
+
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
-  text-align: center;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
 }
 </style>
