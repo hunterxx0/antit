@@ -1,5 +1,11 @@
 <template>
   <div class="container mt-5">
+
+    <div class="text-center mb-4">
+      <img src="@/assets/logo.png" alt="Logo" style="max-width: 150px; max-height: 150px;" />
+      <h2>AnnotateIt!</h2>
+    </div>
+
     <div class="row justify-content-center align-items-center">
       <div class="col-md-6">
         <div class="card">

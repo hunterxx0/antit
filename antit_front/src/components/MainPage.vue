@@ -2,7 +2,11 @@
 <template>
     <div>
       <nav class="navbar navbar-expand-lg navbar-light bg-light  px-md-3 px-lg-4 px-xl-5">
-        <router-link class="navbar-brand font-weight-bold text-success mr-auto" to="/" style="font-size: 34px;">AntIt</router-link>
+        <router-link to="/" style="display: flex; align-items: center; text-decoration: none;">
+            <img src="@/assets/logo.png" alt="Logo" style="max-width: 35px; margin-bottom: 14px; margin-right: 1px;" />
+            <span class="navbar-brand font-weight-bold text-success mr-auto" style="font-size: 34px;">ntIt</span>
+        </router-link>
+
         <button
           class="navbar-toggler"
           type="button"
@@ -37,6 +41,6 @@
   import 'bootstrap/dist/js/bootstrap.bundle.min';
 
   export default {
-    name: 'MainPage'
-  }
+    name: 'MainPage',
+  };
   </script>
