@@ -26,29 +26,52 @@ class Transcription(Model):
     def validate_transcription(self):
         last_char = ""
         capitalized = False
-        for char in self.transcription:
-            if char not in VALIDATION_SET:
-                raise ValidationError(f"Invalid character in transcription: '{char}'")
-
-            if char.isalpha():
-                if char.isupper():
-                    if not last_char or last_char.isspace():
+        transcrip = self.transcription
+        limit = len(transcrip)
+        for idx in range(0, limit):
+            if transcrip[idx] not in VALIDATION_SET:
+                raise ValidationError(
+                    f"Invalid character in transcription: '{transcrip[idx]}'"
+                )
+            # TODO Change the approach
+            if transcrip[idx].isalpha():
+                if transcrip[idx].isupper():
+                    if (
+                        not last_char
+                        or (
+                            last_char.isspace()
+                            and idx < limit
+                            and transcrip[idx + 1].isupper()
+                        )
+                        or last_char.isupper()
+                        and idx < limit
+                        and transcrip[idx + 1].isalpha()
+                        and transcrip[idx + 1].isupper()
+                    ):
                         capitalized = True
-                    elif not capitalized:
+                    elif not capitalized or (
+                        last_char.isupper()
+                        and idx < limit
+                        and transcrip[idx + 1].islower()
+                        and transcrip[idx + 1].isalpha()
+                    ):
+                        print(
+                            f"trans={transcrip}*\nchar={transcrip[idx]}*\nlast={last_char}*"
+                        )
                         raise ValidationError(
                             "Invalid capitalization in the transcription."
                         )
                 else:
                     capitalized = False
 
-            last_char = char
+            last_char = transcrip[idx]
 
-        if self.transcription[-1] in ["?", "!", "."]:
+        if transcrip[-1] in ["?", "!", "."]:
             pass
-        elif self.transcription[-1] in [",", ";", ":"]:
-            if self.transcription[-2] != " ":
+        elif transcrip[-1] in [",", ";", ":"]:
+            if transcrip[-2] != " ":
                 raise ValidationError("Ending punctuation is not followed by a space.")
-        elif self.transcription[-1] != " ":
+        elif transcrip[-1] != " ":
             raise ValidationError("Transcription must end with proper punctuation.")
 
     def save(self, *args, **kwargs):
