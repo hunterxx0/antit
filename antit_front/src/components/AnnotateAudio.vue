@@ -1,26 +1,43 @@
 <template>
   <MainPage>
-    <h2>Annotate Audio</h2>
-    <audio :src="audioFile" controls></audio><br/>
-    <input type="text" v-model="transcription" placeholder="Enter transcription" />
-    <button class="btn btn-primary" @click="submitTranscription">Submit</button>
-    <p v-if="error" style="color: red;">{{ error }}</p>
-    <h3>Old Transcriptions</h3>
-    <table class="table table-striped table-bordered" v-if="oldTranscriptions && oldTranscriptions.length > 0">
-      <thead>
-        <tr>
-          <th>Transcription Text</th>
-          <th>User Name</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr v-for="transcript in oldTranscriptions" :key="transcript.id">
-          <td>{{ transcript.transcription }}</td>
-          <td>{{ transcript.user_name }}</td>
-        </tr>
-      </tbody>
-    </table>
-    <p v-else>No old transcriptions available.</p>
+    <div class="container-fluid text-center">
+      <h2>Annotate Audio</h2>
+      <audio :src="audioFile" controls class="mb-3"></audio>
+
+      <form @submit.prevent="submitTranscription" class="mb-3">
+        <div class="mb-3">
+          <input
+            type="text"
+            v-model="transcription"
+            class="form-control"
+            placeholder="Enter transcription"
+            style="width: 100%; height: 100px; word-wrap: break-word;"
+          />
+        </div>
+        <div class="mb-3 d-flex justify-content-end">
+          <button class="btn btn-primary" type="submit">Submit</button>
+        </div>
+      </form>
+
+      <p v-if="error" class="text-danger">{{ error }}</p>
+
+      <h3>Old Transcriptions</h3>
+      <table class="table table-striped table-bordered" v-if="oldTranscriptions && oldTranscriptions.length > 0">
+        <thead>
+          <tr>
+            <th>Transcription Text</th>
+            <th>User Name</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="transcript in oldTranscriptions" :key="transcript.id">
+            <td>{{ transcript.transcription }}</td>
+            <td>{{ transcript.user_name }}</td>
+          </tr>
+        </tbody>
+      </table>
+      <p v-else>No old transcriptions available.</p>
+    </div>
   </MainPage>
 </template>
 

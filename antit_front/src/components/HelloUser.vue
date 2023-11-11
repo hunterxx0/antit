@@ -19,8 +19,8 @@
               <td>{{ audio.duration }}</td>
               <td>{{ audio.transcription_count }}</td>
               <td>
-                <i v-if="audio.annotated" class="text-success bi bi-check"></i>
-                <i v-else class="text-danger bi bi-x"></i>
+                <i v-if="audio.annotated" class="text-success bi bi-check" style="font-size: 1.5em;"></i>
+                <i v-else class="text-danger bi bi-x" style="font-size: 1.5em;"></i>
               </td>
               <td>
                 <button class="btn btn-primary" @click="annotateAudio(audio)">Annotate</button>
@@ -46,6 +46,7 @@ export default {
   data() {
     return {
       user: '',
+      user_id:'',
       audios: null,
     };
   },
@@ -78,7 +79,8 @@ export default {
     async fetchAudios() {
       try {
         const token = localStorage.getItem('token');
-        const response = await fetch('http://localhost:8000/api/audio/audio/', {
+        const user_id = localStorage.getItem('user')
+        const response = await fetch(`http://localhost:8000/api/audio/audio/?user_id=${user_id}`, {
           headers: {
             Authorization: `Token ${token}`,
           },
@@ -86,7 +88,6 @@ export default {
         if (response.ok) {
           const data = await response.json();
           for (const audio of data) {
-            console.log(audio)
             const path = audio.audio_file;
             const nameIndex = path.lastIndexOf('/');
             const name = path.slice(nameIndex + 1);
