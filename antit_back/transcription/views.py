@@ -37,14 +37,16 @@ class TranscriptionView(ModelViewSet):
             transcription = Transcription.objects.get(id=pk, audio_id=audio_pk)
         except Transcription.DoesNotExist:
             return Response(
-                {"error": "Transcription not found"}, status=status.HTTP_404_NOT_FOUND
+                {"failed": "Transcription not found"}, status=status.HTTP_404_NOT_FOUND
             )
-
-        serializer = TranscriptionSerializer(
-            transcription, data=request.data, partial=True
-        )
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_200_OK)
+        try:
+            serializer = TranscriptionSerializer(
+                transcription, data=request.data, partial=True
+            )
+            if serializer.is_valid():
+                serializer.save()
+                return Response(serializer.data, status=status.HTTP_200_OK)
+        except ValidationError as e:
+            return Response({"failed": e}, status=status.HTTP_400_BAD_REQUEST)
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
