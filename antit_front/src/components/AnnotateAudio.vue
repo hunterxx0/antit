@@ -71,42 +71,46 @@ export default {
         const user = localStorage.getItem('user')
         const token = localStorage.getItem('token');
         let method, audioId, url = null
-
-        if (this.transcriptionExists) {
-          const userTranscription = this.oldTranscriptions.find(
-            transcript => transcript.user === Number(user)
-          );
-          audioId = userTranscription.audio
-          url = `http://localhost:8000/api/transcription/${this.audioId}/transcription/update/${userTranscription.id}/`
-          method = 'PUT'
+        if (this.transcription === "") {
+          this.error = "Connot submit an empty text."
         } else {
-          audioId = this.audioId
-          url = `http://localhost:8000/api/transcription/${this.audioId}/transcriptions/`
-          method = 'POST'
 
-        }
-        const response = await fetch(
-          url,
-          {
-            method: method,
-            headers: {
-              'Content-Type': 'application/json',
-              Authorization: `Token ${token}`,
-            },
-            body: JSON.stringify({
-              audio: audioId,
-              user: user,
-              transcription: this.transcription,
-            }),
+          if (this.transcriptionExists) {
+            const userTranscription = this.oldTranscriptions.find(
+              transcript => transcript.user === Number(user)
+            );
+            audioId = userTranscription.audio
+            url = `http://localhost:8000/api/transcription/${this.audioId}/transcription/update/${userTranscription.id}/`
+            method = 'PUT'
+          } else {
+            audioId = this.audioId
+            url = `http://localhost:8000/api/transcription/${this.audioId}/transcriptions/`
+            method = 'POST'
+
           }
-        );
-        if (response.ok) {
-          await this.fetchOldTranscriptions();
-          this.transcription = '';
-          this.error = null;
-        } else {
-          const data = await response.json();
-          this.error = data.failed;
+          const response = await fetch(
+            url,
+            {
+              method: method,
+              headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Token ${token}`,
+              },
+              body: JSON.stringify({
+                audio: audioId,
+                user: user,
+                transcription: this.transcription,
+              }),
+            }
+          );
+          if (response.ok) {
+            await this.fetchOldTranscriptions();
+            this.transcription = '';
+            this.error = null;
+          } else {
+            const data = await response.json();
+            this.error = data.failed.join('\n');
+          }
         }
       },
 

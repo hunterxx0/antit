@@ -2,7 +2,12 @@
   <MainPage>
     <div class="container-fluid text-center">
       <h2>Hello, {{ user }}!</h2>
-      <div v-if="audios && audios.length > 0" class="table-responsive">
+
+      <div v-if="allAudiosAnnotated">
+        <h4 class="text-success">All the audios are annotated!</h4>
+      </div>
+
+      <div v-else-if="audios && audios.length > 0" class="table-responsive">
         <table class="table table-striped table-bordered">
           <thead>
             <tr>
@@ -10,7 +15,7 @@
               <th>Duration</th>
               <th>Number of Transcriptions</th>
               <th>Annotated</th>
-              <th>Annotate</th>
+              <th v-if="!allAudiosAnnotated">Actions</th>
             </tr>
           </thead>
           <tbody>
@@ -22,13 +27,19 @@
                 <i v-if="audio.annotated" class="text-success bi bi-check" style="font-size: 1.5em;"></i>
                 <i v-else class="text-danger bi bi-x" style="font-size: 1.5em;"></i>
               </td>
-              <td>
-                <button class="btn btn-primary" @click="annotateAudio(audio)">Annotate</button>
+              <td v-if="!allAudiosAnnotated">
+                <button
+                  class="btn btn-primary"
+                  @click="annotateAudio(audio)"
+                >
+                  {{ audio.annotated ? 'Edit' : 'Annotate' }}
+                </button>
               </td>
             </tr>
           </tbody>
         </table>
       </div>
+
       <p v-else>Loading...</p>
     </div>
   </MainPage>
@@ -49,6 +60,11 @@ export default {
       user_id:'',
       audios: null,
     };
+  },
+  computed: {
+    allAudiosAnnotated() {
+      return this.audios && this.audios.every(audio => audio.annotated);
+    },
   },
   methods: {
     getUsernameFromToken() {

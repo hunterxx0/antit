@@ -8,6 +8,10 @@ from django.db.models import (
     CASCADE,
 )
 
+VALIDATION_SET = (
+    "()'aA-àÀ?â .,;çÇ:dD!eEéÉèÈêÊëfFgGhHiIîÎïjJkKlLmMnNoOôÔpPqQrRsStTuUùûvVwWxXyYzZ "
+)
+
 
 class Transcription(Model):
     audio = ForeignKey(Audio, related_name="transcriptions", on_delete=CASCADE)
@@ -20,12 +24,10 @@ class Transcription(Model):
         self.validate_transcription()
 
     def validate_transcription(self):
-        character_set = "()'aA-àÀ?â .,;çÇ:dD!eEéÉèÈêÊëfFgGhHiIîÎïjJkKlLmMnNoOôÔpPqQrRsStTuUùûvVwWxXyYzZ "
-
         last_char = ""
         capitalized = False
         for char in self.transcription:
-            if char not in character_set:
+            if char not in VALIDATION_SET:
                 raise ValidationError(f"Invalid character in transcription: '{char}'")
 
             if char.isalpha():
