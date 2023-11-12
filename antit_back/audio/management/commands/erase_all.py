@@ -3,6 +3,7 @@ from django.core.management.base import BaseCommand
 from audio.models import Audio
 from transcription.models import Transcription
 from annotator.models import Annotator
+from django.contrib.auth.models import User
 
 
 class Command(BaseCommand):
@@ -12,5 +13,6 @@ class Command(BaseCommand):
         Transcription.objects.all().delete()
         Audio.objects.all().delete()
         Annotator.objects.all().delete()
+        User.objects.all().delete()
 
         self.stdout.write(self.style.SUCCESS("All instances removed successfully."))
