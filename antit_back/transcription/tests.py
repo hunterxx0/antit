@@ -28,7 +28,7 @@ class TranscriptionModelTest(TestCase):
     def test_valid_transcription_2(self):
         """Test a valid transcription"""
         transcription = Transcription(
-            audio=self.audio, transcription="Valid. KAP.", user_id=self.user.id
+            audio=self.audio, transcription="Valid. Kap.", user_id=self.user.id
         )
         transcription.full_clean()
 

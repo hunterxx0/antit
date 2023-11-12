@@ -50,13 +50,12 @@ class Transcription(Model):
                         not last_char
                         or (
                             last_char.isspace()
-                            and idx < limit
-                            and transcrip[idx + 1].isupper()
+                            and (idx - 2 > 0 and transcrip[idx - 2] in ["?", "!", "."])
+                            or (idx < limit and transcrip[idx + 1].isupper())
                         )
                         or (
                             last_char.isupper()
                             and idx < limit
-                            and transcrip[idx + 1].isalpha()
                             and transcrip[idx + 1].isupper()
                         )
                     ):
