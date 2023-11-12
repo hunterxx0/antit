@@ -57,9 +57,6 @@ class Transcription(Model):
                         and transcrip[idx + 1].islower()
                         and transcrip[idx + 1].isalpha()
                     ):
-                        print(
-                            f"trans={transcrip}*\nchar={transcrip[idx]}*\nlast={last_char}*"
-                        )
                         raise ValidationError(
                             "Invalid capitalization in the transcription."
                         )
