@@ -56,10 +56,10 @@ export default {
           localStorage.setItem('refresh', data.refresh);
           this.$router.push('/hello-user');
         } else {
-          this.error = data.error;
+          this.error = data.username.join('\n');
         }
       } catch (error) {
-        console.error('Error:', "Invalid Credentials");
+        console.log(error)
         this.error = "Invalid Credentials";
       }
     },
