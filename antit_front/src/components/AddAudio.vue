@@ -48,7 +48,7 @@ export default {
         const formData = new FormData();
         formData.append('audio_file', this.$refs.fileInput.files[0]);
         formData.append('duration', this.duration);
-        const response = await fetch('http://localhost:8000/api/audio/audio/', {
+        const response = await fetch('http://bed507c2346c.c2b96c85.hbtn-cod.io:8000/api/audio/audio/', {
           method: 'POST',
           headers: {
             Authorization: `Token ${token}`,

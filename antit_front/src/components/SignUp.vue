@@ -43,7 +43,7 @@ export default {
   methods: {
     async signup() {
       try {
-        const response = await fetch('http://localhost:8000/api/signup/', {
+        const response = await fetch('http://bed507c2346c.c2b96c85.hbtn-cod.io:8000/api/signup/', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',

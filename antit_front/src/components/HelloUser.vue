@@ -96,7 +96,7 @@ export default {
       try {
         const token = localStorage.getItem('token');
         const user_id = localStorage.getItem('user')
-        const response = await fetch(`http://localhost:8000/api/audio/audio/?user_id=${user_id}`, {
+        const response = await fetch(`http://bed507c2346c.c2b96c85.hbtn-cod.io:8000/api/audio/audio/?user_id=${user_id}`, {
           headers: {
             Authorization: `Token ${token}`,
           },

@@ -80,14 +80,14 @@
                 transcript => transcript.user === Number(user)
               );
               audioId = userTranscription.audio
-              url = `http://localhost:8000/api/transcription/${this.audioId}/transcription/update/${userTranscription.id}/`
+              url = `http://bed507c2346c.c2b96c85.hbtn-cod.io:8000/api/transcription/${this.audioId}/transcription/update/${userTranscription.id}/`
               method = 'PUT'
               console.log(audioId)
               console.log(url)
               console.log(method)
             } else {
               audioId = this.audioId
-              url = `http://localhost:8000/api/transcription/${this.audioId}/transcriptions/`
+              url = `http://bed507c2346c.c2b96c85.hbtn-cod.io:8000/api/transcription/${this.audioId}/transcriptions/`
               method = 'POST'
 
             }
@@ -122,7 +122,7 @@
         try {
           const audioId = this.$route.params.audioId;
           const token = localStorage.getItem('token');
-          const response = await fetch(`http://localhost:8000/api/audio/audio/${audioId}`, {
+          const response = await fetch(`http://bed507c2346c.c2b96c85.hbtn-cod.io:8000/api/audio/audio/${audioId}`, {
             headers: {
               Authorization: `Token ${token}`,
             },
@@ -141,7 +141,7 @@
       async fetchOldTranscriptions() {
         try {
           const audioId = this.$route.params.audioId;
-          const response = await fetch(`http://localhost:8000/api/transcription/${audioId}/transcriptions/`);
+          const response = await fetch(`http://bed507c2346c.c2b96c85.hbtn-cod.io:8000/api/transcription/${audioId}/transcriptions/`);
           if (response.ok) {
             const data = await response.json();
             this.oldTranscriptions = data;
