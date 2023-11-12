@@ -25,6 +25,13 @@ class TranscriptionModelTest(TestCase):
         )
         transcription.full_clean()
 
+    def test_valid_transcription_2(self):
+        """Test a valid transcription"""
+        transcription = Transcription(
+            audio=self.audio, transcription="Valid. KAP.", user_id=self.user.id
+        )
+        transcription.full_clean()
+
     def test_invalid_character(self):
         """Test an invalid character in the transcription"""
         with self.assertRaises(ValidationError) as context:
@@ -93,4 +100,26 @@ class TranscriptionModelTest(TestCase):
             transcription.full_clean()
         self.assertIn(
             "Ending punctuation is not followed by a space", str(context.exception)
+        )
+
+    def test_invalid_middle_punctuation(self):
+        """Test invalid middle punctuation in the transcription"""
+        with self.assertRaises(ValidationError) as context:
+            transcription = Transcription(
+                audio=self.audio, transcription="Invalid.middle.", user_id=self.user.id
+            )
+            transcription.full_clean()
+        self.assertIn(
+            "should be followed by one space and an uppercase character.",
+            str(context.exception),
+        )
+
+        with self.assertRaises(ValidationError) as context:
+            transcription = Transcription(
+                audio=self.audio, transcription="Invalid? middle.", user_id=self.user.id
+            )
+            transcription.full_clean()
+        self.assertIn(
+            "should be followed by one space and an uppercase character.",
+            str(context.exception),
         )
