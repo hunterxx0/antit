@@ -14,6 +14,8 @@ VALIDATION_SET = (
 
 
 class Transcription(Model):
+    """Transcription Model"""
+
     audio = ForeignKey(Audio, related_name="transcriptions", on_delete=CASCADE)
     transcription = TextField(blank=True, null=True)
     user = ForeignKey("auth.User", on_delete=CASCADE)
@@ -24,13 +26,21 @@ class Transcription(Model):
         self.validate_transcription()
 
     def validate_transcription(self):
+        """Validate the transcription"""
+
+        def raise_validation_error(message):
+            raise ValidationError(message)
+
+        def is_valid_character(char):
+            return char.isspace() or char in VALIDATION_SET
+
         last_char = ""
         capitalized = False
         transcrip = self.transcription
         limit = len(transcrip)
         for idx in range(0, limit):
-            if transcrip[idx] not in VALIDATION_SET:
-                raise ValidationError(
+            if not is_valid_character(transcrip[idx]):
+                raise_validation_error(
                     f"Invalid character in transcription: '{transcrip[idx]}'"
                 )
             # TODO Change the approach
@@ -55,13 +65,23 @@ class Transcription(Model):
                         last_char.isupper()
                         and idx < limit
                         and transcrip[idx + 1].islower()
-                        and transcrip[idx + 1].isalpha()
                     ):
-                        raise ValidationError(
+                        raise_validation_error(
                             "Invalid capitalization in the transcription."
                         )
                 else:
                     capitalized = False
+
+            elif transcrip[idx] in ["?", "!", "."]:
+                if (
+                    idx + 1 < limit
+                    and not transcrip[idx + 1].isspace()
+                    or idx + 2 < limit
+                    and transcrip[idx + 2].islower()
+                ):
+                    raise_validation_error(
+                        f"'{transcrip[idx]}' should be followed by one space and an uppercase character."
+                    )
 
             last_char = transcrip[idx]
 
@@ -69,9 +89,9 @@ class Transcription(Model):
             pass
         elif transcrip[-1] in [",", ";", ":"]:
             if transcrip[-2] != " ":
-                raise ValidationError("Ending punctuation is not followed by a space.")
+                raise_validation_error("Ending punctuation is not followed by a space.")
         elif transcrip[-1] != " ":
-            raise ValidationError("Transcription must end with proper punctuation.")
+            raise_validation_error("Transcription must end with proper punctuation.")
 
     def save(self, *args, **kwargs):
         self.clean()
