@@ -129,9 +129,18 @@
           });
           if (response.ok) {
             const data = await response.json();
-            this.audioFile = data.audio_file;
+            const insertPort = (url, port=":8000") => {
+                const parts = url.split('/media/');
+                if (parts.length === 2) {
+                  return `${parts[0]}${port}/media/${parts[1]}`;
+                } else {
+                  alert('Unable to connect to the server.');
+                  return url;
+                }
+            }
+            this.audioFile = insertPort(data.audio_file);
           } else {
-            throw new Error('Unable to fetch audio.');
+            alert('Unable to connect to the server.');
           }
         } catch (error) {
           console.error(error);
