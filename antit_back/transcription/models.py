@@ -9,7 +9,7 @@ from django.db.models import (
 )
 
 VALIDATION_SET = (
-    "()'aA-àÀ?â .,;çÇ:dD!eEéÉèÈêÊëfFgGhHiIîÎïjJkKlLmMnNoOôÔpPqQrRsStTuUùûvVwWxXyYzZ "
+    "()'aA-àÀ?â ,bB.cC;çÇ:dD!eEéÉèÈêÊëfFgGhHiIîÎïjJkKlLmMnNoOôÔpPqQrRsStTuUùûvVwWxXyYzZ"
 )
 
 
